@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<div style="display: flex; justify-content: center;">
+  <h1> Homework2 - Valentina Sisti <h1>
+</div>
+<br>
+<div style="display: flex; justify-content: center;">
+  Alpha -180<input id="alphaSlider" type="range" min="-180" max="180" step="1" value="0" /> 180
+</div>
+<div style="display: flex; justify-content: center;">
+  Phi -90<input id="phiSlider" type="range" min="-90" max="90" step="1" value="0" /> 90
+</div>
+<br>
+<div style="display: flex; justify-content: center;">
+  <button style="background-color: #ff9900;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 17px;" id="animationButton">Start Animation
+  </button>
+</div>
+<br>
+
+<script id="vertex-shader" type="x-shader/x-vertex">
+#version 300 es
+
+in vec4 aPosition;
+in vec2 aTexCoord;
+out vec2 vTexCoord;
+
+uniform mat4 modelViewMatrix;
+uniform mat4 projectionMatrix;
+
+void main()
+{
+    vTexCoord = aTexCoord;
+    gl_Position = projectionMatrix * modelViewMatrix * aPosition;
+}
+</script>
+<script id="fragment-shader" type="x-shader/x-fragment">
+  #version 300 es
+
+precision mediump float;
+
+
+in vec2 vTexCoord;
+uniform bool isTextured, isGreen;
+uniform sampler2D uTextureMap;
+out vec4 fColor;
+
+void main()
+{
+    if(isTextured){
+      fColor = (vec4(1.0, 1.0, 1.0, 1.0))*texture(uTextureMap, vTexCoord);
+    }
+    else{
+      if(isGreen){
+        fColor = vec4(0.2, 0.5, 0.0, 1.0); //green
+      }else{
+        fColor = vec4(0.4, 0.2, 0.0, 1.0); //brown
+      }
+    }
+}
+</script>
+
+<script type="text/javascript" src="../Common/InitShaders.js"></script>
+<script type="text/javascript" src="../Common/MVnew.js"></script>
+<script type="text/javascript" src="Homework2.js"></script>
+
+<body>
+<div style="display: flex; justify-content: center;">
+<canvas id="gl-canvas" width="1024" height="1024">
+Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+<div>
+<img id="texImage" src="bearBodyTexture.jpg" hidden></img>
+<img id="texImage2" src="bearBodyTexture2.jpg" hidden></img>
+</body>
+</html>
+
